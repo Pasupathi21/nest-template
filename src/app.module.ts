@@ -9,6 +9,9 @@ import { ConfigService } from '@nestjs/config'
 import { ConfigModule } from '@nestjs/config'
 import { join } from 'path'
 
+// ************** All Features
+import { FeatureModuelsModule } from './featuremodules/featuremodules.module'
+
 @Module({
   imports: [
     // ************ different env setup 
@@ -16,7 +19,20 @@ import { join } from 'path'
     isGlobal: true,
     envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV}`)
   }), 
-  DatabaseModule, TestModule, UtilsModule, ResponseModule],
+  // ***************** DB Module
+  DatabaseModule, 
+  // ******************************
+
+  // ****************** Reusable utility modules
+  TestModule, 
+  UtilsModule, 
+  ResponseModule, 
+  // ********************************************
+  
+  // *************** FeatureModuelsModule includes all features
+  FeatureModuelsModule
+  // ******************************************************
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
