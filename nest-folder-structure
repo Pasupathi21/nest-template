@@ -1,0 +1,60 @@
+src/
+|-- app.module.ts
+|-- main.ts
+|-- modules/
+|   |-- auth/
+|   |   |-- auth.module.ts
+|   |   |-- auth.service.ts
+|   |   |-- auth.controller.ts
+|   |   |-- dto/
+|   |   |-- entities/
+|   |-- user/
+|   |   |-- user.module.ts
+|   |   |-- user.service.ts
+|   |   |-- user.controller.ts
+|   |   |-- dto/
+|   |   |-- entities/
+|   |-- product/
+|       |-- product.module.ts
+|       |-- product.service.ts
+|       |-- product.controller.ts
+|       |-- dto/
+|       |-- entities/
+|-- common/
+|   |-- decorators/
+|   |-- filters/
+|   |-- guards/
+|   |-- interceptors/
+|   |-- middleware/
+|   |-- pipes/
+|   |-- exceptions/
+|-- config/
+|   |-- config.module.ts
+|   |-- config.service.ts
+|   |-- configuration.ts
+|-- services/
+|   |-- queue/
+|   |   |-- queue.module.ts
+|   |   |-- queue.service.ts
+|   |-- socket/
+|   |   |-- socket.module.ts
+|   |   |-- socket.gateway.ts
+|   |   |-- socket.service.ts
+|   |-- third-party/
+|       |-- third-party.module.ts
+|       |-- third-party.service.ts
+|       |-- integrations/
+|           |-- mail.service.ts
+|           |-- payment.service.ts
+|-- utils/
+|   |-- logger/
+|       |-- logger.service.ts
+|   |-- helpers/
+|       |-- date.helper.ts
+|       |-- string.helper.ts
+|-- interfaces/
+|   |-- user.interface.ts
+|   |-- product.interface.ts
+|-- dtos/
+|   |-- create-user.dto.ts
+|   |-- update-user.dto.ts
