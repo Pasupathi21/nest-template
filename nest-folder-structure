@@ -58,3 +58,5 @@ src/
 |-- dtos/
 |   |-- create-user.dto.ts
 |   |-- update-user.dto.ts
+|-- views/
+|   |--index.pug
