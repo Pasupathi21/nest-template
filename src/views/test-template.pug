@@ -1,0 +1,72 @@
+//- Declare variables
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 0;
+        text-align: center;
+      }
+      nav {
+        background-color: #444;
+        overflow: hidden;
+      }
+      nav a {
+        float: left;
+        display: block;
+        color: #fff;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      nav a:hover {
+        background-color: #555;
+        color: white;
+      }
+      .container {
+        padding: 20px;
+      }
+      footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+      }
+
+  body
+    header
+      h1= title
+
+    nav
+      a(href="#home") Home
+      a(href="#about") About
+      a(href="#contact") Contact
+
+    .container
+      h2 Users #{pdfCount}
+      ul
+        each user, index in users
+          li
+            if user.active
+              strong #{user.name} (Active)
+            else
+              #{user.name}
+            span: | , Age: #{user.age}
+
+    footer
+      p &copy; 2024 Your Company. All rights reserved.
