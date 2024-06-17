@@ -5,10 +5,11 @@ import { PugService } from 'src/utils/helpers/pug/pug.service';
 import { viewsFolderPath, tempDirPath } from 'src/data/app.const'
 import { join } from 'path'
 import * as fs from 'fs'
-import archiver from 'archiver'
+import *as archiver from 'archiver'
 // import * as pdf from 'html-pdf'
 // import puppeteer from 'puppeteer';
-import pdf from 'html-pdf-node'
+import * as pdf from 'html-pdf-node'
+import { promisify } from 'util'
 
 @Injectable()
 export class TemplateService {
@@ -61,18 +62,24 @@ export class TemplateService {
           // await browser.close()
           const file = { content: html };
           const options = { path: pdfPath, format: 'A4' };
-          await pdf.generatePdf(file, options);
-          return pdfPath
+          // const genPdf = promisify(pdf.generatePdf)
+          // await genPdf(file, options);
+          pdf.generatePdf(file, options, (err, buf) => {
+            if(err) reject(err)
+            resolve(pdfPath)
+          })
+          // return pdfPath
         })
       }
 
       // get two files [html to pdf]
+      const pdfArray = []
       const getPdfs = async () => {
-        const pdfArray = []
         for(let i =0; i < 2; i++){
           const html = await this.pugService.parsePugToHtml(join(viewsFolderPath, 'test-template.pug'), {...data, pdfCount: i +1})
           pdfArray.push(await convertHtmlToPdf(html, `pdf-${i+1}-${Date.now()}.pdf`))
         }
+        console.log("pdfArray >>>>>", pdfArray)
         return pdfArray
       }
 
@@ -80,7 +87,7 @@ export class TemplateService {
         return new Promise(async (resolve, reject) => {
           try{
               const pdfs = await getPdfs()
-              const output = fs.createWriteStream('output.zip')
+              const output = fs.createWriteStream(`pdfs-${new Date().toISOString()}.zip`)
               const archive = archiver('zip', { zlib: { level: 9 }})
               const chunks = [];
         
@@ -100,6 +107,7 @@ export class TemplateService {
         })
       }
       const buf = await createZipFile()
+      pdfArray?.forEach(f => fs.unlinkSync(f)) 
 
       // console.log("html >>>>>", html)
       return Promise.resolve(buf)
