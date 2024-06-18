@@ -60,3 +60,15 @@ src/
 |   |-- update-user.dto.ts
 |-- views/
 |   |--index.pug
+
+
+request pipline
+client | => request | => middleware | => guards | => interceptors | => pipes | => routehandler => | interceptors | => client
+
+
+implementations
+
+queue
+redis
+task schedule
+cron jobs

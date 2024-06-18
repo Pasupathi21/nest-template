@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, LoggerService } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
@@ -6,16 +6,49 @@ import { UpdateTemplateDto } from './dto/update-template.dto';
 // import { ResponseModule } from 'src/services/response/response.module';
 import { ResponseService } from 'src/services/response/response.service';
 import { Response } from 'express'
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('template')
 export class TemplateController {
+  private readonly logger = new Logger(TemplateController.name)
+
   constructor(
     private readonly templateService: TemplateService,
-    private readonly responseService: ResponseService
+    private readonly responseService: ResponseService,
+    // private readonly logger: LoggerService
     ) {}
 
+  @ApiTags("create-template")
   @Post()
   create(@Body() createTemplateDto: CreateTemplateDto) {
+    this.logger.log("Hello testing >>>>>", {
+      "accounting": [
+        {
+          "firstName": "John",
+          "lastName": "Doe",
+          "age": 23
+        },
+
+        {
+          "firstName": "Mary",
+          "lastName": "Smith",
+          "age": 32
+        }
+      ],
+      "sales": [
+        {
+          "firstName": "Sally",
+          "lastName": "Green",
+          "age": 27
+        },
+
+        {
+          "firstName": "Jim",
+          "lastName": "Galley",
+          "age": 41
+        }
+      ]
+    })
     return this.templateService.create(createTemplateDto);
   }
 

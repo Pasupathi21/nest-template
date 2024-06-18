@@ -1,26 +1,47 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { join } from 'path'
 import { existsSync, mkdirSync } from 'fs'
+import { join } from 'path'
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
+
+import { AppModule } from './app.module';
+import { GlobalExceptionFilter } from 'src/common/filters/globalexception.filter'
+import { AuthGuard } from './common/guards/auth.guard';
+
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: ['error', 'debug', 'fatal', 'log', 'verbose', 'warn']
+  });
+
+  // ************** cors enable for all origin
+  app.enableCors({
+    origin: "*"
+  })
+
+  // ***************** Global setup
   app.setGlobalPrefix('api')
+  app.useGlobalFilters(new GlobalExceptionFilter())
+  app.useGlobalGuards(new AuthGuard())
 
   // ************* set public folder and temp folder
   // app.useStaticAssets()
   const tempDir = join(__dirname, '..', 'temp')
   if(!existsSync(tempDir)) mkdirSync(tempDir)
   
-  // ************** cors enable for all origin
-  app.enableCors({
-    origin: "*"
-  })
 
   // *************** view engin and view dir setup
   app.setViewEngine('pug')
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
+
+  // ************** swagger setup
+  const swaggerConfig: any = new DocumentBuilder()
+  .setTitle('Template API')
+  .setDescription('nest.js application template')
+  .setVersion('0.1')
+  const documnet = SwaggerModule.createDocument(app, swaggerConfig)
+  SwaggerModule.setup('api-docs', app, documnet)
+
 
   const port = process.env.PORT || 4002
   console.log(`app listening on http://localhost:${port}`)
