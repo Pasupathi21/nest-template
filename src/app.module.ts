@@ -8,9 +8,11 @@ import { ResponseModule } from './services/response/response.module';
 import { ConfigService } from '@nestjs/config'
 import { ConfigModule } from '@nestjs/config'
 import { join } from 'path'
+import { MulterModule } from '@nestjs/platform-express'
 
 // ************** All Features
 import { FeatureModuelsModule } from './featuremodules/featuremodules.module'
+import { FileuploadModule } from './services/fileupload/fileupload.module';
 
 @Module({
   imports: [
@@ -22,15 +24,20 @@ import { FeatureModuelsModule } from './featuremodules/featuremodules.module'
   // ***************** DB Module
   DatabaseModule, 
   // ******************************
-
+  MulterModule.register({
+    dest: ''
+  }),
   // ****************** Reusable utility modules
   TestModule, 
   UtilsModule, 
   ResponseModule, 
   // ********************************************
+
+  // ****************** services modules
+
   
   // *************** FeatureModuelsModule includes all features
-  FeatureModuelsModule
+  FeatureModuelsModule, FileuploadModule
   // ******************************************************
   ],
   controllers: [AppController],

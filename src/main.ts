@@ -3,6 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { existsSync, mkdirSync } from 'fs'
 import { join } from 'path'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
+import * as compression from 'compression'
 
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from 'src/common/filters/globalexception.filter'
@@ -19,6 +20,9 @@ async function bootstrap() {
     origin: "*"
   })
 
+  // ************** compression
+  // decrease the response body (Not recommended for Nginx reverse proxy)
+  app.use(compression())
   // ***************** Global setup
   app.setGlobalPrefix('api')
   app.useGlobalFilters(new GlobalExceptionFilter())
@@ -26,8 +30,12 @@ async function bootstrap() {
 
   // ************* set public folder and temp folder
   // app.useStaticAssets()
-  const tempDir = join(__dirname, '..', 'temp')
+  const tempDir = join(__dirname, 'temp')
   if(!existsSync(tempDir)) mkdirSync(tempDir)
+
+  // ************ upload files temp
+  const multerDir = join(__dirname, 'temp', 'multer')
+  if(!existsSync(multerDir)) mkdirSync(multerDir, { recursive: true })
   
 
   // *************** view engin and view dir setup
