@@ -13,6 +13,7 @@ import { MulterModule } from '@nestjs/platform-express'
 // ************** All Features
 import { FeatureModuelsModule } from './featuremodules/featuremodules.module'
 import { FileuploadModule } from './services/fileupload/fileupload.module';
+import { SocketModule } from './services/socket/socket.module';
 
 @Module({
   imports: [
@@ -34,10 +35,10 @@ import { FileuploadModule } from './services/fileupload/fileupload.module';
   // ********************************************
 
   // ****************** services modules
-
+  FileuploadModule, SocketModule,
   
   // *************** FeatureModuelsModule includes all features
-  FeatureModuelsModule, FileuploadModule
+  FeatureModuelsModule, 
   // ******************************************************
   ],
   controllers: [AppController],

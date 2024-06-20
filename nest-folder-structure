@@ -72,3 +72,7 @@ queue
 redis
 task schedule
 cron jobs
+
+<!--  -->
+
+SOCKET(Module with global context): include app modules
