@@ -6,10 +6,8 @@ import { viewsFolderPath, tempDirPath } from 'src/data/app.const'
 import { join } from 'path'
 import * as fs from 'fs'
 import *as archiver from 'archiver'
-// import * as pdf from 'html-pdf'
-// import puppeteer from 'puppeteer';
 import * as pdf from 'html-pdf-node'
-import { promisify } from 'util'
+
 
 @Injectable()
 export class TemplateService {
