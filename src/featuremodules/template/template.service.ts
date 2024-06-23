@@ -7,12 +7,14 @@ import { join } from 'path'
 import * as fs from 'fs'
 import *as archiver from 'archiver'
 import * as pdf from 'html-pdf-node'
+import { FirebaseService } from 'src/services/firebase/firebase.service';
 
 
 @Injectable()
 export class TemplateService {
   constructor(
-    private readonly pugService: PugService
+    private readonly pugService: PugService,
+    private readonly firebaseService: FirebaseService
   ){}
   create(createTemplateDto: CreateTemplateDto) {
     return 'This action adds a new template';
@@ -109,6 +111,15 @@ export class TemplateService {
 
       // console.log("html >>>>>", html)
       return Promise.resolve(buf)
+    }catch(error){
+      console.log("error", error)
+      return Promise.reject(error)
+    }
+  }
+  async uploadFileTest(): Promise<any> {
+    try{
+
+      return Promise.resolve()
     }catch(error){
       console.log("error", error)
       return Promise.reject(error)

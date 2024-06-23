@@ -1,4 +1,4 @@
-import { Injectable, Res } from '@nestjs/common';
+import { Injectable, Res, HttpException } from '@nestjs/common';
 import { Response, Request} from 'express'
 
 type ResponseData = Record<string,any> | Record<string, unknown> | Array<any> | number | string | Buffer | Blob | null

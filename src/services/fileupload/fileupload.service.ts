@@ -11,6 +11,7 @@ export class FileuploadService {
       throw new Error('test error')
       return Promise.resolve(files)
     }catch(error){
+      console.log("error >>>>", error)
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
