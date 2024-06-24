@@ -32,8 +32,8 @@ export class UploadFileValidation implements PipeTransform {
             }
         }
     }
-    transform(value: files, metadata: ArgumentMetadata){
-        this.logger.log(value[0]?.mimetype)
+    transform(value: any, metadata: ArgumentMetadata){
+        // this.logger.log("value >>>>>>>>", value)
         const validationObj = this.isValid(value)
         console.log("validationObj", validationObj)
         if(!validationObj?.isValid){

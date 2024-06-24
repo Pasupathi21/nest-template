@@ -19,7 +19,6 @@ export class FirebaseService {
         measurementId: process?.env?.MEASUREMENT_ID
     });
     storageInstance: FirebaseStorage = getStorage(this.firebaseApp)
-    private folderHierarchy = 'UPLOADES/'
     
     getFolderHierarchyPath(file) {
         return imageMimeTypes.includes(file.mimetype) ? 'images' :
@@ -30,12 +29,14 @@ export class FirebaseService {
     }
     private async upload_to_firebase(file: Record<string, any>, fileType: fileType) {
         try {
-            this.folderHierarchy += fileType === 'IMAGE' ? 'images' :
-                fileType === 'AUDIO' ? 'audios' :
-                    fileType === 'VIDEO' ? 'videos' :
-                        fileType === 'DOC' ? 'docs' :
-                            'others'
-            const fullPath = `${this.folderHierarchy}${this.getFolderHierarchyPath(file)}`
+            let folderHierarchy = 'UPLOADES/'
+            // folderHierarchy += fileType === 'IMAGE' ? 'images' :
+            //     fileType === 'AUDIO' ? 'audios' :
+            //         fileType === 'VIDEO' ? 'videos' :
+            //             fileType === 'DOC' ? 'docs' :
+            //                 'others'
+            const fullPath = `${folderHierarchy}${this.getFolderHierarchyPath(file)}/${Date.now()}-${file?.originalname}`
+            this.logger.log(fullPath)
             const storageRef = ref(this.storageInstance, fullPath)
             const uploadTask = uploadBytesResumable(
                 storageRef,
@@ -47,7 +48,7 @@ export class FirebaseService {
                 this.logger.log(`progress completed: ${(snap.bytesTransferred / snap.totalBytes) * 100}%`)
             },
                 (error) => {
-                    this.logger.log("error", error.message)
+                    this.logger.log("error", error)
                     return Promise.reject(error)
                 },
                 async () => {
@@ -66,10 +67,12 @@ export class FirebaseService {
         const fileuploadResponse = []
         try {
             if (!Array.isArray(files)) {
-                fileuploadResponse.push(await this.upload_to_firebase(files, fileType))
+                const res = await this.upload_to_firebase(files, fileType)
+                fileuploadResponse.push(res)
             } else {
                 for (let index = 0; index < files?.length; index++) {
-                    fileuploadResponse.push(await this.upload_to_firebase(files[index], fileType))
+                    const res = await this.upload_to_firebase(files[index], fileType)
+                    fileuploadResponse.push(res)
                 }
             }
             return Promise.resolve({
@@ -78,6 +81,7 @@ export class FirebaseService {
                 fileuploadResponse
             })
         } catch (error) {
+            console.log("error >>>", error)
             return Promise.reject({
                 status: false,
                 message: 'upload failed to firebase',

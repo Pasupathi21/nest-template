@@ -20,14 +20,14 @@ export class FileuploadController {
   @ApiTags('upload files')
   @Post('files')
   @UseInterceptors(FilesInterceptor('files', MAX_FILES_UPLOAD_COUNT))
-  @UsePipes( new UploadFileValidation())
+  @UsePipes(new UploadFileValidation())
   async uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>, @Res() res: Response) {
     try{
-       // this.logger.log(files)
+      //  this.logger.log(files) 
     const fileRes = await this.fileuploadService.uploadFiles(files)
-    this.responseService.success(res, fileRes)
+    this.responseService.success(res, files)
     }catch(error){
-      // throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 }
