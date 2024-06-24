@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { initializeApp, FirebaseApp } from 'firebase/app'
 import { FirebaseStorage, getStorage, uploadBytesResumable, ref, getDownloadURL } from 'firebase/storage'
 import { imageMimeTypes, audioMimeTypes, videoMimeTypes, documentMimeTypes} from 'src/data/app.const'
@@ -29,6 +29,15 @@ export class FirebaseService {
     }
     private async upload_to_firebase(file: Record<string, any>, fileType: fileType) {
         try {
+            console.log("firebaseApp >>>>>>>", {
+                apiKey: process?.env?.API_KEY,
+                authDomain: process?.env?.AUTH_DOMAIN,
+                projectId: process?.env?.PROJECT_ID,
+                storageBucket: process?.env?.STORAGE_BUCKET,
+                messagingSenderId: process?.env?.MESSAGING_SENDER_ID,
+                appId: process?.env?.APP_ID,
+                measurementId: process?.env?.MEASUREMENT_ID
+            })
             let folderHierarchy = 'UPLOADES/'
             // folderHierarchy += fileType === 'IMAGE' ? 'images' :
             //     fileType === 'AUDIO' ? 'audios' :
@@ -38,6 +47,7 @@ export class FirebaseService {
             const fullPath = `${folderHierarchy}${this.getFolderHierarchyPath(file)}/${Date.now()}-${file?.originalname}`
             this.logger.log(fullPath)
             const storageRef = ref(this.storageInstance, fullPath)
+            // console.log(storageRef)
             const uploadTask = uploadBytesResumable(
                 storageRef,
                 file?.buffer,
@@ -48,14 +58,19 @@ export class FirebaseService {
                 this.logger.log(`progress completed: ${(snap.bytesTransferred / snap.totalBytes) * 100}%`)
             },
                 (error) => {
-                    this.logger.log("error", error)
-                    return Promise.reject(error)
+                    console.log("error", error)
+                    new HttpException(error?.message, HttpStatus.INTERNAL_SERVER_ERROR)
                 },
                 async () => {
-                    return Promise.resolve({
-                        ...uploadTask.snapshot.metadata,
-                        downloadUrl: await getDownloadURL(uploadTask.snapshot.ref)
-                    })
+                    try{
+                        return Promise.resolve({
+                            ...uploadTask.snapshot.metadata,
+                            downloadUrl: await getDownloadURL(uploadTask.snapshot.ref)
+                        })
+                    }catch(err){
+                        this.logger.log("catch error", err)
+                        new HttpException(err?.message, HttpStatus.INTERNAL_SERVER_ERROR)
+                    }
                 }
             )
         } catch (error) {

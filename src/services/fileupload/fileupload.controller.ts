@@ -27,6 +27,7 @@ export class FileuploadController {
     const fileRes = await this.fileuploadService.uploadFiles(files)
     this.responseService.success(res, files)
     }catch(error){
+      console.log("error", error)
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
