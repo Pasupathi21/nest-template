@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
 import { PugService } from 'src/utils/helpers/pug/pug.service';
@@ -8,6 +8,7 @@ import * as fs from 'fs'
 import *as archiver from 'archiver'
 import * as pdf from 'html-pdf-node'
 import { FirebaseService } from 'src/services/firebase/firebase.service';
+import { STATUS_CODES } from 'http';
 
 
 @Injectable()
@@ -122,6 +123,15 @@ export class TemplateService {
       return Promise.resolve()
     }catch(error){
       console.log("error", error)
+      return Promise.reject(error)
+    }
+  }
+
+  async testExcep(){
+    try{
+      throw new Error("custome error")
+      // return Promise.resolve()
+    }catch(error){
       return Promise.reject(error)
     }
   }

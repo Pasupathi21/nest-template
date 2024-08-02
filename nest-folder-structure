@@ -76,3 +76,7 @@ cron jobs
 <!--  -->
 
 SOCKET(Module with global context): include app modules
+
+CONTROLLERS: Handling only http-exception and service calls
+
+SERVICES: Business-logics with exception handling

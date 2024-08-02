@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, LoggerService } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, LoggerService, HttpException, HttpStatus } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
@@ -87,6 +87,16 @@ export class TemplateController {
       )
     } catch (error) {
       return this.responseService.failed(res, null, error?.message)
+    }
+  }
+
+  @ApiTags('Exception-Api')
+  @Get('exception-test')
+  async testExe(){
+    try{
+      await this.templateService.testExcep()
+    }catch(error){
+      throw new HttpException({ message: error?.message, error: error }, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 }

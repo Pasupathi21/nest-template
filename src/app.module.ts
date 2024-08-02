@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { ConfigModule } from '@nestjs/config'
 import { join } from 'path'
 import { MulterModule } from '@nestjs/platform-express'
+import { APP_FILTER } from '@nestjs/core';
 
 
 import { AppController } from './app.controller';
@@ -18,6 +19,8 @@ import { FeatureModuelsModule } from './featuremodules/featuremodules.module'
 import { FileuploadModule } from './services/fileupload/fileupload.module';
 import { SocketModule } from './services/socket/socket.module';
 import { FirebaseModule } from './services/firebase/firebase.module';
+import { ResponseService } from './services/response/response.service';
+import { GlobalExceptionFilter } from './common/filters/globalexception.filter';
 
 @Module({
   imports: [
@@ -47,6 +50,15 @@ import { FirebaseModule } from './services/firebase/firebase.module';
   // ******************************************************
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    ResponseService,
+    // add filter to globally without creating any instance
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter
+    }
+  ],
+  exports: [ResponseService]
 })
 export class AppModule {}

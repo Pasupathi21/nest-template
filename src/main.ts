@@ -25,7 +25,7 @@ async function bootstrap() {
   app.use(compression())
   // ***************** Global setup
   app.setGlobalPrefix('api')
-  app.useGlobalFilters(new GlobalExceptionFilter())
+  // app.useGlobalFilters(new GlobalExceptionFilter())
   app.useGlobalGuards(new AuthGuard())
 
   // ************* set public folder and temp folder
