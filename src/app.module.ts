@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { join } from 'path'
 import { MulterModule } from '@nestjs/platform-express'
 import { APP_FILTER } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule'
 
 
 import { AppController } from './app.controller';
@@ -21,6 +22,7 @@ import { SocketModule } from './services/socket/socket.module';
 import { FirebaseModule } from './services/firebase/firebase.module';
 import { ResponseService } from './services/response/response.service';
 import { GlobalExceptionFilter } from './common/filters/globalexception.filter';
+import { CronModule } from './services/cron/cron.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { GlobalExceptionFilter } from './common/filters/globalexception.filter';
     isGlobal: true,
     envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV}`)
   }), 
+  // ************** cronjs core module
+  ScheduleModule.forRoot(), // forRoot will setup the default configuration to access the cron over any service within the app
   // ***************** DB Module
   DatabaseModule, 
   // ******************************
@@ -42,10 +46,10 @@ import { GlobalExceptionFilter } from './common/filters/globalexception.filter';
   // ********************************************
 
   // ****************** services modules
-  FileuploadModule, SocketModule, FirebaseModule, 
+  FileuploadModule, SocketModule, FirebaseModule, CronModule,
   
   // *************** FeatureModuelsModule includes all features
-  FeatureModuelsModule,
+  FeatureModuelsModule, 
   
   // ******************************************************
   ],

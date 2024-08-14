@@ -63,7 +63,7 @@ src/
 
 
 request pipline
-client | => request | => middleware | => guards | => interceptors | => pipes | => routehandler => | interceptors | => client
+client | => request | => middleware | => guards | => interceptors | => (pipes | => routehandler) => | interceptors | => client
 
 
 implementations
