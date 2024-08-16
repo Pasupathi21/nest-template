@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
@@ -99,4 +99,15 @@ export class TemplateController {
       throw new HttpException({ message: error?.message, error: error }, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
+
+  // *************** New crud for testing ******************
+  @Post('create-movies')
+  async insertMovieRelated(@Query("type") @Body() payload: any, res: Response){
+    try{
+     const resData = await this.templateService.insertMovieRelated()
+    }catch(error){
+      
+    }
+  }
+
 }

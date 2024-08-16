@@ -13,8 +13,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model users {
+  id        String    @id @default(uuid()) @db.Uuid
+  user_name String
+  email     String
+  reviews   reviews[]
+  ratings   ratings[]
+  is_active Boolean   @default(true)
+}
+
+model movies {
+  id         String    @id @unique @default(uuid()) @db.Uuid
+  movie_name String
+  genre_id   String    @db.Uuid
+  genre      genres    @relation(fields: [genre_id], references: [id])
+  reviews    reviews[]
+  ratings    ratings[]
+  is_active  Boolean   @default(true)
+}
+
+model genres {
+  id        String   @id @default(uuid()) @db.Uuid
+  genre     String
+  is_active Boolean  @default(true)
+  movie     movies[]
+}
+
+model reviews {
+  id        String  @id @default(uuid()) @db.Uuid
+  user_id   String  @db.Uuid
+  user      users   @relation(fields: [user_id], references: [id])
+  movie_id  String  @db.Uuid
+  movie     movies  @relation(fields: [movie_id], references: [id])
+  is_active Boolean @default(true)
+}
+
+model ratings {
+  id        String  @id @default(uuid()) @db.Uuid
+  user_id   String  @db.Uuid
+  user      users   @relation(fields: [user_id], references: [id])
+  movie_id  String  @db.Uuid
+  movie     movies  @relation(fields: [movie_id], references: [id])
+  is_active Boolean @default(true)
 }

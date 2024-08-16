@@ -135,4 +135,9 @@ export class TemplateService {
       return Promise.reject(error)
     }
   }
+
+  // ***************** Movies API
+  async insertMovieRelated(){
+    
+  }
 }
