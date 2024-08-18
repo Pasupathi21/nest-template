@@ -187,7 +187,8 @@ export class TemplateService {
   // Queue
   async testSingleQueue(): Promise<any>{
     try{
-      this.singleQ.addJobToQueue({message: 'This single Queue: ' + Date.now()})
+      this.singleQ.addJobToQueue('PROCESS_ONE', {message: 'This single Queue process one: ' + Date.now()})
+      this.singleQ.addJobToQueue('PROCESS_TWO', {message: 'This single Queue process two: ' + Date.now()})
       return Promise.resolve()
     }catch(error){
       console.log("error >>>>>>>", error)

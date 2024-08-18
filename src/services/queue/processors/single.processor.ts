@@ -13,12 +13,19 @@ export class SingleProcessor {
     ){
 
     }
-    @Process()
+
+    // give name to separate process
+    @Process('PROCESS_ONE')
     async handleSingleJob(job: Job){
         this.logger.log("Test single job", job.data)
     }
 
-    addJobToQueue(jobData){
-        this.singleQ.add(jobData)
+    @Process('PROCESS_TWO')
+    async handleSingleJobProcessTwo(job: Job){
+        this.logger.log("Test single job process two", job.data)
+    }
+
+    addJobToQueue(name, data, ...rest){
+        this.singleQ.add(name, data)
     }
 }
