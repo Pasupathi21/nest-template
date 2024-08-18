@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { join } from 'path'
 import { MulterModule } from '@nestjs/platform-express'
 import { APP_FILTER } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule'
+import { BullModule } from '@nestjs/bull'
+
 
 
 import { AppController } from './app.controller';
@@ -24,6 +25,12 @@ import { ResponseService } from './services/response/response.service';
 import { GlobalExceptionFilter } from './common/filters/globalexception.filter';
 import { CronModule } from './services/cron/cron.module';
 
+import { QUEUE_CONST } from './data/queue.const'
+// processor class
+import {} from 'src/services/queue/processors/multi.processor'
+import { PROCESSOR_CALSS } from 'src/services/queue/processors/processor.index';
+import { QueueModule } from './services/queue/queue.module';
+
 @Module({
   imports: [
     // ************ different env setup 
@@ -39,6 +46,10 @@ import { CronModule } from './services/cron/cron.module';
   MulterModule.register({
     dest: join(__dirname, 'temp', 'multer')
   }),
+
+  // ***************** setup queue
+    QueueModule,
+    
   // ****************** Reusable utility modules
   TestModule, 
   UtilsModule, 
@@ -61,8 +72,14 @@ import { CronModule } from './services/cron/cron.module';
     {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter
-    }
+    },
+
+    // add processors for handling job in the queue
+    // ...PROCESSOR_CALSS
   ],
-  exports: [ResponseService]
+  exports: [
+    ResponseService,
+    // ...PROCESSOR_CALSS
+  ]
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { TemplateService } from './template.service';
-import { CreateTemplateDto } from './dto/create-template.dto';
+import { CreateTemplateDto, InsertUser, InsertMovies, InsertPayload, InsertRating, InsertReview, InsertGenre } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
  
 // import { ResponseModule } from 'src/services/response/response.module';
@@ -101,12 +101,93 @@ export class TemplateController {
   }
 
   // *************** New crud for testing ******************
-  @Post('create-movies')
-  async insertMovieRelated(@Query("type") @Body() payload: any, res: Response){
+  @ApiTags('Movies')
+  @Post('create-movie')
+  async insertMovie(
+    @Query("type") type: string, 
+    @Body() payload: InsertMovies, 
+    @Res() res: Response){
     try{
-     const resData = await this.templateService.insertMovieRelated()
+     const resData = await this.templateService.insertMovieRelated(type, payload)
+      return this.responseService.success(res, resData, HttpStatus.CREATED)
     }catch(error){
-      
+      throw new HttpException({ message: error?.message, error: error}, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @ApiTags('Movies')
+  @Post('create-user')
+  async insertMovieUser(
+    @Query("type") type: string, 
+    @Body() payload: InsertUser, 
+    @Res() res: Response){
+    try{
+     const resData = await this.templateService.insertMovieRelated(type, payload)
+      return this.responseService.success(res, resData, HttpStatus.CREATED)
+    }catch(error){
+      console.log("catch error ", error)
+      throw new HttpException({ message: error?.message, error: error}, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+  @ApiTags('Movies')
+  @Post('create-genre')
+  async insertMovieGenre(
+    @Query("type") type: string, 
+    @Body() payload: InsertGenre, 
+    @Res() res: Response){
+    try{
+     const resData = await this.templateService.insertMovieRelated(type, payload)
+      return this.responseService.success(res, resData, HttpStatus.CREATED)
+    }catch(error){
+      throw new HttpException({ message: error?.message, error: error}, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+  @ApiTags('Movies')
+  @Post('create-review')
+  async insertMovieReview(
+    @Query("type") type: string, 
+    @Body() payload: InsertReview, 
+    @Res() res: Response){
+    try{
+     const resData = await this.templateService.insertMovieRelated(type, payload)
+      return this.responseService.success(res, resData, HttpStatus.CREATED)
+    }catch(error){
+      throw new HttpException({ message: error?.message, error: error}, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+  @ApiTags('Movies')
+  @Post('create-rating')
+  async insertMovieRating(
+    @Query("type") type: string, 
+    @Body() payload: InsertRating, 
+    @Res() res: Response){
+    try{
+     const resData = await this.templateService.insertMovieRelated(type, payload)
+      return this.responseService.success(res, resData, HttpStatus.CREATED)
+    }catch(error){
+      throw new HttpException({ message: error?.message, error: error}, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @ApiTags('Queues')
+  @Get('test-single')
+  async testSingleQueue(@Res() res: Response){
+    try{
+      const resData = await this.templateService.testSingleQueue()
+      return this.responseService.success(res, resData)
+    }catch(error){
+      throw new HttpException({ message: error?.message, error: error}, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  @ApiTags('Queues')
+  @Get('test-multi')
+  async testMultiQueue(@Res() res: Response){
+    try{
+      const resData = await this.templateService.testMultiQueue()
+      return this.responseService.success(res, resData)
+    }catch(error){
+      throw new HttpException({ message: error?.message, error: error }, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 

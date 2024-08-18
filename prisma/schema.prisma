@@ -41,6 +41,7 @@ model genres {
 
 model reviews {
   id        String  @id @default(uuid()) @db.Uuid
+  review    String
   user_id   String  @db.Uuid
   user      users   @relation(fields: [user_id], references: [id])
   movie_id  String  @db.Uuid
@@ -50,6 +51,7 @@ model reviews {
 
 model ratings {
   id        String  @id @default(uuid()) @db.Uuid
+  rating    Int     @default(0)
   user_id   String  @db.Uuid
   user      users   @relation(fields: [user_id], references: [id])
   movie_id  String  @db.Uuid

@@ -16,7 +16,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         this.responseService.failed(response, null, exception.message, status)
         // response.status(status).send({
         //     message: exception.message,
-        //     status: false,
+        //     status: false,.
         //     data: null
         // })
     }

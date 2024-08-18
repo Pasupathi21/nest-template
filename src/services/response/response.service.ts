@@ -18,6 +18,7 @@ export class ResponseService {
      * failed response
      */
     failed(@Res() response: Response, data: ResponseData = {}, message: string = '', statusCode: number = 500,): Response {
+        console.log("response >>>>>>>>>>>", response.status)
         return response.status(statusCode).json({
             message: message || 'Internal server error, please try again later',
             data,
