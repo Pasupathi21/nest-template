@@ -6,11 +6,16 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import * as compression from 'compression'
 
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from 'src/common/filters/globalexception.filter'
 import { AuthGuard } from './common/guards/auth.guard';
+
+import * as env from 'dotenv'
 
 
 async function bootstrap() {
+
+  // load env
+  env.config()
+  
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['error', 'debug', 'fatal', 'log', 'verbose', 'warn']
   });
