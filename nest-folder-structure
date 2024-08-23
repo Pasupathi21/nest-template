@@ -62,6 +62,24 @@ src/
 |   |--index.pug
 
 
+views folder and file structure
+views/
+├── layouts/
+│   ├── main.pug
+│   └── admin.pug
+├── partials/
+│   ├── header.pug
+│   └── footer.pug
+├── pages/
+│   ├── index.pug
+│   ├── about.pug
+│   └── contact.pug
+└── errors/
+    ├── 404.pug
+    └── 500.pug
+
+
+
 request pipline
 client | => request | => middleware | => guards | => interceptors | => (pipes | => routehandler) => | interceptors | => client
 
